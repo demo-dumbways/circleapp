@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Redis } from "@upstash/redis";
 import CircleError from "../utils/CircleError";
-import { REDIS_TOKEN, REDIS_URL } from "../configs/config";
+import { UPSTASH_REDIS_REST_TOKEN, UPSTASH_REDIS_REST_URL } from "../configs/config";
 
 export let redisClient: any;
 
 export async function initRedis() {
   try {
     redisClient = new Redis({
-      url: REDIS_URL,
-      token: REDIS_TOKEN,
+      url: UPSTASH_REDIS_REST_URL,
+      token: UPSTASH_REDIS_REST_TOKEN,
     });
   } catch (err) {
     throw new CircleError({ error: `Redis client error: ${err}` });
