@@ -14,7 +14,7 @@ CREATE TABLE "users" (
 );
 
 -- CreateTable
-CREATE TABLE "vibes" (
+CREATE TABLE "threads" (
     "id" SERIAL NOT NULL,
     "content" TEXT NOT NULL,
     "image" TEXT,
@@ -23,7 +23,7 @@ CREATE TABLE "vibes" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "authorId" INTEGER NOT NULL,
 
-    CONSTRAINT "vibes_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "threads_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -34,7 +34,7 @@ CREATE TABLE "replies" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "authorId" INTEGER NOT NULL,
-    "vibeId" INTEGER NOT NULL,
+    "threadId" INTEGER NOT NULL,
 
     CONSTRAINT "replies_pkey" PRIMARY KEY ("id")
 );
@@ -45,7 +45,7 @@ CREATE TABLE "likes" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "authorId" INTEGER NOT NULL,
-    "vibeId" INTEGER NOT NULL,
+    "threadId" INTEGER NOT NULL,
 
     CONSTRAINT "likes_pkey" PRIMARY KEY ("id")
 );
@@ -68,19 +68,19 @@ CREATE UNIQUE INDEX "users_username_key" ON "users"("username");
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- AddForeignKey
-ALTER TABLE "vibes" ADD CONSTRAINT "vibes_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "threads" ADD CONSTRAINT "threads_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "replies" ADD CONSTRAINT "replies_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "replies" ADD CONSTRAINT "replies_vibeId_fkey" FOREIGN KEY ("vibeId") REFERENCES "vibes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "replies" ADD CONSTRAINT "replies_threadId_fkey" FOREIGN KEY ("threadId") REFERENCES "threads"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "likes" ADD CONSTRAINT "likes_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "likes" ADD CONSTRAINT "likes_vibeId_fkey" FOREIGN KEY ("vibeId") REFERENCES "vibes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "likes" ADD CONSTRAINT "likes_threadId_fkey" FOREIGN KEY ("threadId") REFERENCES "threads"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "follows" ADD CONSTRAINT "follows_followingId_fkey" FOREIGN KEY ("followingId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

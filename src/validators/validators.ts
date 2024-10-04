@@ -24,7 +24,7 @@ const resetPasswordSchema = Joi.object({
     password: Joi.string().min(4).required(),
 })
 
-const vibeSchema = Joi.object({
+const threadSchema = Joi.object({
     content: Joi.string().max(255).required(),
     image: Joi.string().uri().allow(null),
     badLabels: Joi.array().items(Joi.string()),
@@ -54,7 +54,7 @@ export {
     loginSchema,
     forgotPasswordSchema,
     resetPasswordSchema,
-    vibeSchema,
+    threadSchema,
     replySchema,
     userSchema,
 }

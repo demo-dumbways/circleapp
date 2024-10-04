@@ -25,8 +25,8 @@ class LikeControllers {
             )
         }
 
-        // to make sure getAllVibes request gets the latest vibes data
-        await Redis.deleteVibes()
+        // to make sure getAllThreads request gets the latest threads data
+        await Redis.deleteThreads()
 
         return res.status(200).json(
             new ResponseDTO<LikeType>({

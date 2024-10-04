@@ -11,7 +11,7 @@ import FollowControllers from './controllers/FollowControllers'
 import LikeControllers from './controllers/LikeControllers'
 import ReplyControllers from './controllers/ReplyControllers'
 import UserControllers from './controllers/UserControllers'
-import VibeControllers from './controllers/VibeControllers'
+import ThreadControllers from './controllers/ThreadControllers'
 import authenticate from './middlewares/authenticate'
 import { rateLimiterMiddleware } from './middlewares/ratelimit'
 import Redis from './middlewares/redis'
@@ -56,11 +56,11 @@ async function main() {
     AppV1.post('/auth/forgot', AuthControllers.forgotPassword)
     AppV1.patch('/auth/reset', authenticate, AuthControllers.resetPassword)
 
-    AppV1.get('/vibes', authenticate, Redis.getVibes, VibeControllers.getVibes)
-    AppV1.get('/vibes/:id', authenticate, VibeControllers.getVibe)
-    AppV1.get('/vibes/user/:id', authenticate, VibeControllers.getUserVibes)
-    AppV1.post('/vibes', uploader.single('image'), authenticate, VibeControllers.postVibes)
-    AppV1.delete('/vibes/:id', authenticate, VibeControllers.deleteVibe)
+    AppV1.get('/threads', authenticate, Redis.getThreads, ThreadControllers.getThreads)
+    AppV1.get('/threads/:id', authenticate, ThreadControllers.getThread)
+    AppV1.get('/threads/user/:id', authenticate, ThreadControllers.getUserThreads)
+    AppV1.post('/threads', uploader.single('image'), authenticate, ThreadControllers.postThreads)
+    AppV1.delete('/threads/:id', authenticate, ThreadControllers.deleteThread)
 
     AppV1.get('/follow/:id', authenticate, FollowControllers.follow)
     AppV1.get('/unfollow/:id', authenticate, FollowControllers.unfollow)

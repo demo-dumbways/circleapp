@@ -1,21 +1,21 @@
 import { NextFunction, Request, Response } from "express";
-import { VibeType, VibeWithDetailType } from "../types/types";
+import { ThreadType, ThreadWithDetailType } from "../types/types";
 import { redisClient } from "../libs/redis";
 
 import ResponseDTO from "../dtos/ResponseDTO";
 
 class Redis {
-  async getVibes(req: Request, res: Response, next: NextFunction) {
-    const vibes = await redisClient.get("VIBES");
+  async getThreads(req: Request, res: Response, next: NextFunction) {
+    const threads = await redisClient.get("VIBES");
 
-    if (vibes) {
+    if (threads) {
       return res.status(200).json(
-        new ResponseDTO<VibeWithDetailType[]>({
+        new ResponseDTO<ThreadWithDetailType[]>({
           error: false,
           message: {
-            status: "Vibes retrieved!",
+            status: "Threads retrieved!",
           },
-          data: vibes,
+          data: threads,
         })
       );
     }
@@ -23,11 +23,11 @@ class Redis {
     next();
   }
 
-  async setVibes(vibes: VibeType[]) {
-    await redisClient.set("VIBES", vibes);
+  async setThreads(threads: ThreadType[]) {
+    await redisClient.set("VIBES", threads);
   }
 
-  async deleteVibes() {
+  async deleteThreads() {
     await redisClient.del("VIBES");
   }
 }

@@ -22,7 +22,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   filterContent Boolean   @default(false)
 
-  vibes         Vibe[]    @relation("UserVibes")
+  threads         Thread[]    @relation("UserThreads")
   replies       Reply[]   @relation("UserReplies")
   likes         Like[]    @relation("UserLikes")
   followings    Follow[]  @relation("UserFollowing")
@@ -31,7 +31,7 @@ model User {
   @@map("users")
 }
 
-model Vibe {
+model Thread {
   id            Int       @id @default(autoincrement())
   content       String
   image         String?
@@ -39,13 +39,13 @@ model Vibe {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  author        User      @relation(fields: [authorId], references: [id], name: "UserVibes",  onDelete: Cascade)
+  author        User      @relation(fields: [authorId], references: [id], name: "UserThreads",  onDelete: Cascade)
   authorId      Int
 
-  replies       Reply[]   @relation("VibeReplies")
-  likes         Like[]    @relation("VibeLikes")
+  replies       Reply[]   @relation("ThreadReplies")
+  likes         Like[]    @relation("ThreadLikes")
 
-  @@map("vibes")
+  @@map("threads")
 }
 
 model Reply {
@@ -58,7 +58,7 @@ model Reply {
 
   repliedBy   User      @relation(fields: [authorId], references: [id], name: "UserReplies", onDelete: Cascade)
   authorId    Int
-  repliedTo   Vibe      @relation(fields: [targetId], references: [id], name: "VibeReplies", onDelete: Cascade)
+  repliedTo   Thread      @relation(fields: [targetId], references: [id], name: "ThreadReplies", onDelete: Cascade)
   targetId    Int
 
   @@map("replies")
@@ -71,7 +71,7 @@ model Like {
 
   likedBy     User      @relation(fields: [authorId], references: [id], name: "UserLikes", onDelete: Cascade)
   authorId    Int
-  likedOn     Vibe      @relation(fields: [targetId], references: [id], name: "VibeLikes", onDelete: Cascade)
+  likedOn     Thread      @relation(fields: [targetId], references: [id], name: "ThreadLikes", onDelete: Cascade)
   targetId    Int
 
   @@map("likes")

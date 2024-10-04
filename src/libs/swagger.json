@@ -151,7 +151,7 @@
         }
       }
     },
-    "/v1/vibes": {
+    "/v1/threads": {
       "get": {
         "description": "",
         "responses": {
@@ -198,7 +198,7 @@
         }
       }
     },
-    "/v1/vibes/{id}": {
+    "/v1/threads/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -248,7 +248,7 @@
         }
       }
     },
-    "/v1/vibes/user/{id}": {
+    "/v1/threads/user/{id}": {
       "get": {
         "description": "",
         "parameters": [

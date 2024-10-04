@@ -1,4 +1,4 @@
-class VibeDTO {
+class ThreadDTO {
     content: string
     image: string | null
     badLabels: string[]
@@ -12,4 +12,4 @@ class VibeDTO {
     }
 }
 
-export default VibeDTO
+export default ThreadDTO

@@ -1,17 +1,17 @@
 import { Prisma, PrismaClient } from '@prisma/client'
-import { UserType, VibeType, VibeWithDetailType } from '../types/types'
+import { UserType, ThreadType, ThreadWithDetailType } from '../types/types'
 import ServiceResponseDTO from '../dtos/ServiceResponseDTO'
-import VibeDTO from '../dtos/VibeDTO'
+import ThreadDTO from '../dtos/ThreadDTO'
 import CircleError from '../utils/CircleError'
-import { vibeSchema } from '../validators/validators'
+import { threadSchema } from '../validators/validators'
 import primsaErrorHandler from '../utils/PrismaError'
 
 const prisma = new PrismaClient()
 
-class VibeServices {
-    async getVibes(loggedUser: UserType): Promise<ServiceResponseDTO<VibeWithDetailType[]>> {
+class ThreadServices {
+    async getThreads(loggedUser: UserType): Promise<ServiceResponseDTO<ThreadWithDetailType[]>> {
         try {
-            const rawVibes: VibeWithDetailType[] = await prisma.vibe.findMany({
+            const rawThreads: ThreadWithDetailType[] = await prisma.thread.findMany({
                 include: {
                     replies: true,
                     likes: true,
@@ -19,8 +19,8 @@ class VibeServices {
                 },
             })
 
-            const vibes: VibeWithDetailType[] = rawVibes.map((vibe) => {
-                const { replies, likes, author, ...rest } = vibe
+            const threads: ThreadWithDetailType[] = rawThreads.map((thread) => {
+                const { replies, likes, author, ...rest } = thread
 
                 delete author.createdAt
                 delete author.updatedAt
@@ -32,13 +32,13 @@ class VibeServices {
                     author,
                     totalReplies: replies.length,
                     totalLikes: likes.length,
-                    isLiked: vibe.likes.some((like) => like.authorId === loggedUser.id),
+                    isLiked: thread.likes.some((like) => like.authorId === loggedUser.id),
                 }
             })
 
-            return new ServiceResponseDTO<VibeWithDetailType[]>({
+            return new ServiceResponseDTO<ThreadWithDetailType[]>({
                 error: false,
-                payload: vibes.sort((x, y) => {
+                payload: threads.sort((x, y) => {
                     const xInMs = x.createdAt.getTime()
                     const yInMs = y.createdAt.getTime()
 
@@ -59,12 +59,12 @@ class VibeServices {
         }
     }
 
-    async getVibe(
+    async getThread(
         id: number,
         loggedUser: UserType
-    ): Promise<ServiceResponseDTO<VibeWithDetailType>> {
+    ): Promise<ServiceResponseDTO<ThreadWithDetailType>> {
         try {
-            const rawVibe: VibeWithDetailType = await prisma.vibe.findUnique({
+            const rawThread: ThreadWithDetailType = await prisma.thread.findUnique({
                 where: {
                     id: id,
                 },
@@ -75,21 +75,21 @@ class VibeServices {
                 },
             })
 
-            if (!rawVibe) {
-                throw new CircleError({ error: 'Requested vibe does not exist.' })
+            if (!rawThread) {
+                throw new CircleError({ error: 'Requested thread does not exist.' })
             }
 
-            const vibe = {
-                ...rawVibe,
-                likes: rawVibe.likes.map((like) => {
+            const thread = {
+                ...rawThread,
+                likes: rawThread.likes.map((like) => {
                     delete like.createdAt
                     delete like.updatedAt
                     return like
                 }),
-                totalReplies: rawVibe.replies.length,
-                totalLikes: rawVibe.likes.length,
-                isLiked: rawVibe.likes.some((like) => like.authorId === loggedUser.id),
-                replies: rawVibe.replies.sort((x, y) => {
+                totalReplies: rawThread.replies.length,
+                totalLikes: rawThread.likes.length,
+                isLiked: rawThread.likes.some((like) => like.authorId === loggedUser.id),
+                replies: rawThread.replies.sort((x, y) => {
                     const xInMs = x.createdAt.getTime()
                     const yInMs = y.createdAt.getTime()
 
@@ -97,14 +97,14 @@ class VibeServices {
                 }),
             }
 
-            delete vibe.updatedAt
-            delete vibe.author.createdAt
-            delete vibe.author.updatedAt
-            delete vibe.author.password
+            delete thread.updatedAt
+            delete thread.author.createdAt
+            delete thread.author.updatedAt
+            delete thread.author.password
 
-            return new ServiceResponseDTO<VibeWithDetailType>({
+            return new ServiceResponseDTO<ThreadWithDetailType>({
                 error: false,
-                payload: vibe,
+                payload: thread,
             })
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -120,9 +120,9 @@ class VibeServices {
         }
     }
 
-    async getUserVibes(id: number): Promise<ServiceResponseDTO<VibeWithDetailType[]>> {
+    async getUserThreads(id: number): Promise<ServiceResponseDTO<ThreadWithDetailType[]>> {
         try {
-            const rawVibes: VibeWithDetailType[] = await prisma.vibe.findMany({
+            const rawThreads: ThreadWithDetailType[] = await prisma.thread.findMany({
                 where: {
                     authorId: id,
                 },
@@ -132,12 +132,12 @@ class VibeServices {
                 },
             })
 
-            if (!rawVibes.length) {
-                throw new CircleError({ error: 'Requested user does not have any vibes.' })
+            if (!rawThreads.length) {
+                throw new CircleError({ error: 'Requested user does not have any threads.' })
             }
 
-            const vibes = rawVibes.map((vibe) => {
-                const { replies, likes, ...rest } = vibe
+            const threads = rawThreads.map((thread) => {
+                const { replies, likes, ...rest } = thread
 
                 return {
                     ...rest,
@@ -146,9 +146,9 @@ class VibeServices {
                 }
             })
 
-            return new ServiceResponseDTO<VibeWithDetailType[]>({
+            return new ServiceResponseDTO<ThreadWithDetailType[]>({
                 error: false,
-                payload: vibes,
+                payload: threads,
             })
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -164,21 +164,21 @@ class VibeServices {
         }
     }
 
-    async postVibe(vibeDTO: VibeDTO): Promise<ServiceResponseDTO<VibeType>> {
+    async postThread(threadDTO: ThreadDTO): Promise<ServiceResponseDTO<ThreadType>> {
         try {
-            const { error } = vibeSchema.validate(vibeDTO)
+            const { error } = threadSchema.validate(threadDTO)
 
             if (error) {
                 throw new CircleError({ error: error.details[0].message })
             }
 
-            const postedVibe = await prisma.vibe.create({
-                data: vibeDTO,
+            const postedThread = await prisma.thread.create({
+                data: threadDTO,
             })
 
-            return new ServiceResponseDTO<VibeType>({
+            return new ServiceResponseDTO<ThreadType>({
                 error: false,
-                payload: postedVibe,
+                payload: postedThread,
             })
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -194,9 +194,9 @@ class VibeServices {
         }
     }
 
-    async deleteVibe(id: number): Promise<ServiceResponseDTO<VibeType>> {
+    async deleteThread(id: number): Promise<ServiceResponseDTO<ThreadType>> {
         try {
-            const deletedVibes = await prisma.vibe.delete({
+            const deletedThreads = await prisma.thread.delete({
                 where: {
                     id: id,
                 },
@@ -204,7 +204,7 @@ class VibeServices {
 
             return new ServiceResponseDTO({
                 error: false,
-                payload: deletedVibes,
+                payload: deletedThreads,
             })
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -221,4 +221,4 @@ class VibeServices {
     }
 }
 
-export default new VibeServices()
+export default new ThreadServices()

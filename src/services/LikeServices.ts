@@ -9,11 +9,11 @@ const prisma = new PrismaClient()
 class LikeServices {
     async likeMechanism(likeDTO: LikeDTO): Promise<ServiceResponseDTO<LikeType>> {
         try {
-            // check if the vibe already liked
+            // check if the thread already liked
             const isLiked: LikeType = await this.isLiked(likeDTO)
 
             if (isLiked) {
-                // unlike the vibe
+                // unlike the thread
                 const removedLike: LikeType = await this.removeLike(isLiked)
                 delete removedLike.createdAt
                 delete removedLike.updatedAt
@@ -24,7 +24,7 @@ class LikeServices {
                 })
             }
 
-            // like the vibe
+            // like the thread
             const addedLike: LikeType = await this.addLike(likeDTO)
             delete addedLike.createdAt
             delete addedLike.updatedAt

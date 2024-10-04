@@ -19,7 +19,7 @@ class UserServices {
                 include: {
                     followers: true,
                     followings: true,
-                    vibes: {
+                    threads: {
                         include: {
                             replies: true,
                             likes: true,
@@ -35,19 +35,19 @@ class UserServices {
                 isFollowed: rawUser.followers.some(
                     (follower) => follower.ownerId === loggedUser.id
                 ),
-                vibes: rawUser.vibes.map((vibe) => {
-                    const replies = vibe.replies
-                    const likes = vibe.likes
+                threads: rawUser.threads.map((thread) => {
+                    const replies = thread.replies
+                    const likes = thread.likes
 
-                    delete vibe.createdAt
-                    delete vibe.replies
-                    delete vibe.likes
+                    delete thread.createdAt
+                    delete thread.replies
+                    delete thread.likes
 
                     delete loggedUser.createdAt
                     delete loggedUser.updatedAt
 
                     return {
-                        ...vibe,
+                        ...thread,
                         author: rawUser,
                         totalReplies: replies.length,
                         totalLikes: likes.length,
@@ -87,7 +87,7 @@ class UserServices {
                 include: {
                     followers: true,
                     followings: true,
-                    vibes: {
+                    threads: {
                         include: {
                             replies: true,
                             likes: true,
@@ -100,19 +100,19 @@ class UserServices {
                 ...rawUser,
                 totalFollower: rawUser.followers.length,
                 totalFollowing: rawUser.followings.length,
-                vibes: rawUser.vibes.map((vibe) => {
-                    const replies = vibe.replies
-                    const likes = vibe.likes
+                threads: rawUser.threads.map((thread) => {
+                    const replies = thread.replies
+                    const likes = thread.likes
 
-                    delete vibe.createdAt
-                    delete vibe.replies
-                    delete vibe.likes
+                    delete thread.createdAt
+                    delete thread.replies
+                    delete thread.likes
 
                     delete loggedUser.createdAt
                     delete loggedUser.updatedAt
 
                     return {
-                        ...vibe,
+                        ...thread,
                         author: loggedUser,
                         totalReplies: replies.length,
                         totalLikes: likes.length,

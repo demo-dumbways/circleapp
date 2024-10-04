@@ -13,7 +13,7 @@ export interface UserType {
     filterContent: boolean
 }
 
-export interface VibeType {
+export interface ThreadType {
     id: number
     content: string
     image: string
@@ -58,10 +58,10 @@ export interface ServiceResponseType<T> {
 export interface UserWithDetailype extends UserType {
     followers?: FollowType[]
     followings?: FollowType[]
-    vibes?: VibeWithDetailType[]
+    threads?: ThreadWithDetailType[]
 }
 
-export interface VibeWithDetailType extends VibeType {
+export interface ThreadWithDetailType extends ThreadType {
     replies?: ReplyType[]
     likes?: LikeType[]
     totalReplies?: number

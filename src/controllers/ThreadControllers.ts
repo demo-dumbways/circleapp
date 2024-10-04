@@ -1,16 +1,16 @@
 import { Request, Response } from 'express'
-import { VibeType, VibeWithDetailType } from '../types/types'
-import VibeServices from '../services/VibeServices'
+import { ThreadType, ThreadWithDetailType } from '../types/types'
+import ThreadServices from '../services/ThreadServices'
 import ResponseDTO from '../dtos/ResponseDTO'
 import ServiceResponseDTO from '../dtos/ServiceResponseDTO'
 import Redis from '../middlewares/redis'
 
-class VibeControllers {
-    async getVibes(req: Request, res: Response) {
+class ThreadControllers {
+    async getThreads(req: Request, res: Response) {
         const loggedUser = res.locals.user
 
-        const { error, payload }: ServiceResponseDTO<VibeWithDetailType[]> =
-            await VibeServices.getVibes(loggedUser)
+        const { error, payload }: ServiceResponseDTO<ThreadWithDetailType[]> =
+            await ThreadServices.getThreads(loggedUser)
 
         if (error) {
             return res.status(500).json(
@@ -22,25 +22,25 @@ class VibeControllers {
             )
         }
 
-        await Redis.setVibes(payload)
+        await Redis.setThreads(payload)
 
         return res.status(200).json(
-            new ResponseDTO<VibeWithDetailType>({
+            new ResponseDTO<ThreadWithDetailType>({
                 error,
                 message: {
-                    status: 'Vibes retrieved!',
+                    status: 'Threads retrieved!',
                 },
                 data: payload,
             })
         )
     }
 
-    async getVibe(req: Request, res: Response) {
+    async getThread(req: Request, res: Response) {
         const loggedUser = res.locals.user
         const { id } = req.params
 
-        const { error, payload }: ServiceResponseDTO<VibeWithDetailType> =
-            await VibeServices.getVibe(+id, loggedUser)
+        const { error, payload }: ServiceResponseDTO<ThreadWithDetailType> =
+            await ThreadServices.getThread(+id, loggedUser)
 
         if (error) {
             return res.status(500).json(
@@ -53,21 +53,21 @@ class VibeControllers {
         }
 
         return res.status(200).json(
-            new ResponseDTO<VibeWithDetailType>({
+            new ResponseDTO<ThreadWithDetailType>({
                 error,
                 message: {
-                    status: 'Vibe retrieved!',
+                    status: 'Thread retrieved!',
                 },
                 data: payload,
             })
         )
     }
 
-    async getUserVibes(req: Request, res: Response) {
+    async getUserThreads(req: Request, res: Response) {
         const { id } = req.params
 
-        const { error, payload }: ServiceResponseDTO<VibeWithDetailType[]> =
-            await VibeServices.getUserVibes(+id)
+        const { error, payload }: ServiceResponseDTO<ThreadWithDetailType[]> =
+            await ThreadServices.getUserThreads(+id)
 
         if (error) {
             return res.status(500).json(
@@ -80,22 +80,22 @@ class VibeControllers {
         }
 
         return res.status(200).json(
-            new ResponseDTO<VibeWithDetailType[]>({
+            new ResponseDTO<ThreadWithDetailType[]>({
                 error,
                 message: {
-                    status: "User's vibes retrieved!",
+                    status: "User's threads retrieved!",
                 },
                 data: payload,
             })
         )
     }
 
-    async postVibes(req: Request, res: Response) {
+    async postThreads(req: Request, res: Response) {
         const loggedUser = res.locals.user
         const image = req.file?.path || null
         const { content, badLabels } = req.body
 
-        const { error, payload }: ServiceResponseDTO<VibeType> = await VibeServices.postVibe({
+        const { error, payload }: ServiceResponseDTO<ThreadType> = await ThreadServices.postThread({
             content,
             image,
             badLabels: JSON.parse(badLabels),
@@ -112,23 +112,23 @@ class VibeControllers {
             )
         }
 
-        // to make sure getAllVibes request gets the latest vibes data
-        await Redis.deleteVibes()
+        // to make sure getAllThreads request gets the latest threads data
+        await Redis.deleteThreads()
 
         return res.status(200).json(
-            new ResponseDTO<VibeType>({
+            new ResponseDTO<ThreadType>({
                 error,
                 message: {
-                    status: 'Vibe posted!',
+                    status: 'Thread posted!',
                 },
                 data: payload,
             })
         )
     }
 
-    async deleteVibe(req: Request, res: Response) {
+    async deleteThread(req: Request, res: Response) {
         const { id } = req.params
-        const { error, payload }: ServiceResponseDTO<VibeType> = await VibeServices.deleteVibe(+id)
+        const { error, payload }: ServiceResponseDTO<ThreadType> = await ThreadServices.deleteThread(+id)
 
         if (error) {
             return res.status(500).json(
@@ -140,14 +140,14 @@ class VibeControllers {
             )
         }
 
-        // to make sure getAllVibes request gets the latest vibes data
-        await Redis.deleteVibes()
+        // to make sure getAllThreads request gets the latest threads data
+        await Redis.deleteThreads()
 
         return res.status(200).json(
-            new ResponseDTO<VibeType>({
+            new ResponseDTO<ThreadType>({
                 error,
                 message: {
-                    status: 'Vibe deleted!',
+                    status: 'Thread deleted!',
                 },
                 data: payload,
             })
@@ -155,4 +155,4 @@ class VibeControllers {
     }
 }
 
-export default new VibeControllers()
+export default new ThreadControllers()
