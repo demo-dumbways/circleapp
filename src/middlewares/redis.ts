@@ -6,7 +6,7 @@ import ResponseDTO from "../dtos/ResponseDTO";
 
 class Redis {
   async getThreads(req: Request, res: Response, next: NextFunction) {
-    const threads = await redisClient.get("VIBES");
+    const threads = await redisClient.get("THREADS");
 
     if (threads) {
       return res.status(200).json(
@@ -24,11 +24,11 @@ class Redis {
   }
 
   async setThreads(threads: ThreadType[]) {
-    await redisClient.set("VIBES", threads);
+    await redisClient.set("THREADS", threads);
   }
 
   async deleteThreads() {
-    await redisClient.del("VIBES");
+    await redisClient.del("THREADS");
   }
 }
 
