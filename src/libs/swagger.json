@@ -28,6 +28,9 @@
           "200": {
             "description": "OK"
           },
+          "429": {
+            "description": "Too Many Requests"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -67,6 +70,9 @@
           "200": {
             "description": "OK"
           },
+          "429": {
+            "description": "Too Many Requests"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -97,6 +103,9 @@
           "200": {
             "description": "OK"
           },
+          "429": {
+            "description": "Too Many Requests"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -123,6 +132,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "429": {
+            "description": "Too Many Requests"
           },
           "500": {
             "description": "Internal Server Error"
@@ -151,6 +163,9 @@
           "200": {
             "description": "OK"
           },
+          "429": {
+            "description": "Too Many Requests"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -161,6 +176,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "429": {
+            "description": "Too Many Requests"
           },
           "500": {
             "description": "Internal Server Error"
@@ -202,6 +220,9 @@
           "200": {
             "description": "OK"
           },
+          "429": {
+            "description": "Too Many Requests"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -222,6 +243,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "429": {
+            "description": "Too Many Requests"
           },
           "500": {
             "description": "Internal Server Error"
@@ -246,6 +270,9 @@
           "200": {
             "description": "OK"
           },
+          "429": {
+            "description": "Too Many Requests"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -269,6 +296,9 @@
           "200": {
             "description": "OK"
           },
+          "429": {
+            "description": "Too Many Requests"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -291,6 +321,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "429": {
+            "description": "Too Many Requests"
           },
           "500": {
             "description": "Internal Server Error"
@@ -317,6 +350,9 @@
           "400": {
             "description": "Bad Request"
           },
+          "429": {
+            "description": "Too Many Requests"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -329,6 +365,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "429": {
+            "description": "Too Many Requests"
           },
           "500": {
             "description": "Internal Server Error"
@@ -357,6 +396,9 @@
           "200": {
             "description": "OK"
           },
+          "429": {
+            "description": "Too Many Requests"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -380,6 +422,9 @@
           "200": {
             "description": "OK"
           },
+          "429": {
+            "description": "Too Many Requests"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -393,6 +438,9 @@
           "200": {
             "description": "OK"
           },
+          "429": {
+            "description": "Too Many Requests"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -405,6 +453,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "429": {
+            "description": "Too Many Requests"
           },
           "500": {
             "description": "Internal Server Error"
@@ -452,6 +503,9 @@
           "200": {
             "description": "OK"
           },
+          "429": {
+            "description": "Too Many Requests"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -464,6 +518,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "429": {
+            "description": "Too Many Requests"
           },
           "500": {
             "description": "Internal Server Error"
