@@ -1,23 +1,21 @@
 import { PrismaClient } from '@prisma/client'
+import cors from 'cors'
+import express from 'express'
+import swaggerUI from 'swagger-ui-express'
 import { PORT } from './configs/config'
 import { initRedis } from './libs/redis'
-import { rateLimit } from 'express-rate-limit'
-import { RedisStore } from 'rate-limit-redis'
-import { redisClient } from './libs/redis'
-import express from 'express'
-import cors from 'cors'
-import swaggerUI from 'swagger-ui-express'
 import swaggerDoc from './libs/swagger.json'
 
-import VibeControllers from './controllers/VibeControllers'
 import AuthControllers from './controllers/AuthControllers'
-import ReplyControllers from './controllers/ReplyControllers'
-import LikeControllers from './controllers/LikeControllers'
-import UserControllers from './controllers/UserControllers'
 import FollowControllers from './controllers/FollowControllers'
+import LikeControllers from './controllers/LikeControllers'
+import ReplyControllers from './controllers/ReplyControllers'
+import UserControllers from './controllers/UserControllers'
+import VibeControllers from './controllers/VibeControllers'
 import authenticate from './middlewares/authenticate'
-import uploader from './middlewares/upload'
+import { rateLimiterMiddleware } from './middlewares/ratelimit'
 import Redis from './middlewares/redis'
+import uploader from './middlewares/upload'
 
 const prisma = new PrismaClient()
 
@@ -51,19 +49,7 @@ AppV1.get(
 )
 
 async function main() {
-    AppV1.use(
-        rateLimit({
-            windowMs: 15 * 60 * 1000, // reset every 15 mins
-            limit: 499,
-            standardHeaders: 'draft-7',
-            legacyHeaders: false,
-            store: new RedisStore({
-                sendCommand: (...args: string[]) => {
-                    return redisClient.sendCommand(args)
-                },
-            }),
-        })
-    )
+    AppV1.use(rateLimiterMiddleware)
 
     AppV1.post('/register', AuthControllers.register)
     AppV1.post('/login', AuthControllers.login)

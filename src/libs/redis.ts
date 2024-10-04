@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createClient } from 'redis'
-import { RedisClientType } from '@redis/client'
-import { REDIS_URL } from '../configs/config'
-import CircleError from '../utils/CircleError'
+import { Redis } from "@upstash/redis";
+import CircleError from "../utils/CircleError";
+import { REDIS_TOKEN, REDIS_URL } from "../configs/config";
 
-export let redisClient: RedisClientType<any, any, any>
+export let redisClient: any;
 
 export async function initRedis() {
-    redisClient = await createClient({
-        url: `${REDIS_URL}`,
-    })
-        .on('error', (err) => {
-            throw new CircleError({ error: `Redis client error: ${err}` })
-        })
-        .connect()
+  try {
+    redisClient = new Redis({
+      url: REDIS_URL,
+      token: REDIS_TOKEN,
+    });
+  } catch (err) {
+    throw new CircleError({ error: `Redis client error: ${err}` });
+  }
 }

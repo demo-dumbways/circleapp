@@ -14,6 +14,7 @@ export const PORT = process.env.PORT
 export const SECRET_SAUCE = process.env.SECRET_SAUCE
 export const SALT_ROUND = process.env.SALT_ROUND
 export const REDIS_URL = process.env.REDIS_URL
+export const REDIS_TOKEN = process.env.REDIS_TOKEN
 export const MAILER_USERNAME = process.env.MAILER_USERNAME
 export const MAILER_PASSWORD = process.env.MAILER_PASSWORD
 
