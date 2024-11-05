@@ -5,7 +5,7 @@ export const rateLimiterMiddleware = async (req, res, next) => {
 
   const { success, remaining, reset } = await rateLimit.limit(identifier);
 
-  res.set("X-RateLimit-Limit", "10");
+  res.set("X-RateLimit-Limit", "1000");
   res.set("X-RateLimit-Remaining", remaining.toString());
   res.set("X-RateLimit-Reset", reset.toString());
 
